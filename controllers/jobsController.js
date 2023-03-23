@@ -15,8 +15,15 @@ const setJobs = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Something is missing");
   }
-  const job = await Job.create(req.body);
-  res.status(200).json(job);
+  const job = await Job.create({
+    companyImage: req.body.companyImage,
+    companyName: req.body.companyName,
+    jobTitle: req.body.jobTitle,
+    location: req.body.location,
+    salary: req.body.salary,
+    desc: req.body.desc,
+  });
+  res.status(201).json(job);
 });
 
 // @desc Update a job
