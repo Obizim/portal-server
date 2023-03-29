@@ -48,7 +48,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @ route POST /api/users/login
 const loginUser = asyncHandler(async (req, res) => {
   const { role, email, password } = req.body;
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ role, email });
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
       _id: user.id,
@@ -77,7 +77,7 @@ const getMe = asyncHandler(async (req, res) => {
 
 // Generate Token
 const getToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
 module.exports = { registerUser, loginUser, getMe };
