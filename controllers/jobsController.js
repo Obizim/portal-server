@@ -8,6 +8,13 @@ const getJobs = asyncHandler(async (req, res) => {
   res.status(200).json(jobs);
 });
 
+// @desc Get all recruiter jobs
+// @ route GET /api/jobs/recruiter
+const getRecruiterJobs = asyncHandler(async (req, res) => {
+  const jobs = await Job.find({user: req.user.id});
+  res.status(200).json(jobs);
+});
+
 // @desc Set a job
 // @ route POST /api/jobs
 const setJobs = asyncHandler(async (req, res) => {
@@ -22,6 +29,7 @@ const setJobs = asyncHandler(async (req, res) => {
     location: req.body.location,
     salary: req.body.salary,
     desc: req.body.desc,
+    user: req.user.id
   });
   res.status(201).json(job);
 });
@@ -40,6 +48,7 @@ const deleteJobs = asyncHandler(async (req, res) => {
 
 module.exports = {
   getJobs,
+  getRecruiterJobs,
   setJobs,
   updateJobs,
   deleteJobs,
