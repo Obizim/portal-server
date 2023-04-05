@@ -23,11 +23,11 @@ const setJobs = asyncHandler(async (req, res) => {
     throw new Error("Something is missing");
   }
   const job = await Job.create({
-    companyImage: req.body.companyImage,
     companyName: req.body.companyName,
     jobTitle: req.body.jobTitle,
     location: req.body.location,
     salary: req.body.salary,
+    type: req.body.type,
     desc: req.body.desc,
     user: req.user.id
   });

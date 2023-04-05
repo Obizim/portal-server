@@ -47,8 +47,8 @@ const registerUser = asyncHandler(async (req, res) => {
 // @desc Login User
 // @ route POST /api/users/login
 const loginUser = asyncHandler(async (req, res) => {
-  const { role, email, password } = req.body;
-  const user = await User.findOne({ role, email });
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
       _id: user.id,

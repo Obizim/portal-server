@@ -7,7 +7,10 @@ const jobSchema = mongoose.Schema(
       required: true,
       ref: 'User'
     },
-    companyImage: String,
+    type: {
+      type: String,
+      required: [true, "Enter job type please"]
+    },
     companyName: {
       type: String,
       trim: true,

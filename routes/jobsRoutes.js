@@ -10,7 +10,7 @@ const {
 
 const { auth } = require("../middleware/auth")
 
-router.route("/").get(getJobs).post(auth ,setJobs);
+router.route("/").get(getJobs).post(auth, setJobs);
 router.route('/recruiter').get(auth, getRecruiterJobs)
 router.route("/:id").put(updateJobs).delete(deleteJobs);
 
