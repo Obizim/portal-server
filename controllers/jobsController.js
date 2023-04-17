@@ -4,9 +4,34 @@ const Job = require("../models/jobModels");
 // @desc Get all jobs
 // @ route GET /api/jobs
 const getJobs = asyncHandler(async (req, res) => {
-  const jobs = await Job.find();
-  res.status(200).json(jobs);
+  const {title, location} = req.query
+  if(title || location) {
+    const jobs = await Job.find({
+      $or: [
+        { jobTitle: { $regex: title, $options: 'i' } },
+        { location: { $regex: location, $options: 'i' } },
+      ],
+    });
+    
+    res.status(200).json(jobs);
+  }else {
+    const jobs = await Job.find();
+    res.status(200).json(jobs);
+  }
 });
+
+// @desc Get one job post
+// @ route GET /api/jobs/:id
+const getOne = asyncHandler(async (req, res) => { 
+  const _id = req.params.id;
+  const job = await Job.find({_id});
+  if(!_id) {
+    res.status(404);
+    throw new Error("Job not found");
+  }
+  res.status(200).json(job)
+ })
+
 
 // @desc Get all recruiter jobs
 // @ route GET /api/jobs/recruiter
@@ -48,6 +73,7 @@ const deleteJobs = asyncHandler(async (req, res) => {
 
 module.exports = {
   getJobs,
+  getOne,
   getRecruiterJobs,
   setJobs,
   updateJobs,
