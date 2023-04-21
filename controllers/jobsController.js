@@ -5,14 +5,14 @@ const Job = require("../models/jobModels");
 // @ route GET /api/jobs
 const getJobs = asyncHandler(async (req, res) => {
   const {title, location} = req.query
-  if(title || location) {
-    const jobs = await Job.find({
-      $or: [
-        { jobTitle: { $regex: title, $options: 'i' } },
-        { location: { $regex: location, $options: 'i' } },
-      ],
-    });
-    
+  if(title && location) {
+    const jobs = await Job.find({$or: [{ jobTitle: { $regex: title, $options: 'i' } },{ location: { $regex: location, $options: 'i' } }]});
+    res.status(200).json(jobs);
+  }else if(title) {
+    const jobs = await Job.find({ jobTitle: { $regex: title, $options: 'i' } });
+    res.status(200).json(jobs);
+  }else if(location) {
+    const jobs = await Job.find({ location: { $regex: location, $options: 'i' } },);
     res.status(200).json(jobs);
   }else {
     const jobs = await Job.find();
