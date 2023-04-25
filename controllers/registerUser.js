@@ -66,12 +66,29 @@ const loginUser = asyncHandler(async (req, res) => {
 // @desc Get User data
 // @ route GET /api/users/me
 const getMe = asyncHandler(async (req, res) => {
-  const { _id, name, role, email } = await User.findById(req.user.id);
+  const { _id, name, role, email, number, address } = await User.findById(req.user.id);
   res.status(200).json({
     id: _id,
     name,
     role,
     email,
+    number,
+    address
+  });
+});
+
+// @desc Update User data
+// @ route GET /api/users/me
+const updateMe = asyncHandler(async (req, res) => {
+  const { newName, number, address } = req.body;
+  const { _id, role, name, email } = await User.findOneAndUpdate({_id: req.user.id}, {name: newName, number, address});
+  res.status(200).json({
+    id: _id,
+    name,
+    role,
+    email,
+    number,
+    address
   });
 });
 
@@ -80,4 +97,4 @@ const getToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
-module.exports = { registerUser, loginUser, getMe };
+module.exports = { registerUser, loginUser, getMe, updateMe };
