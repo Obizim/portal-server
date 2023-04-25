@@ -28,6 +28,8 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password: hashedPassword,
+    number: "",
+    address: ""
   });
   if (user) {
     res.status(201).json({
@@ -35,6 +37,8 @@ const registerUser = asyncHandler(async (req, res) => {
       role: user.role,
       name: user.name,
       email: user.email,
+      number: user.number,
+      address: user.address,
       password: user.password,
       token: getToken(user._id),
     });
@@ -55,6 +59,8 @@ const loginUser = asyncHandler(async (req, res) => {
       role: user.role,
       name: user.name,
       email: user.email,
+      number: user.number,
+      address: user.address,
       token: getToken(user._id),
     });
   } else {
@@ -80,8 +86,8 @@ const getMe = asyncHandler(async (req, res) => {
 // @desc Update User data
 // @ route GET /api/users/me
 const updateMe = asyncHandler(async (req, res) => {
-  const { newName, number, address } = req.body;
-  const { _id, role, name, email } = await User.findOneAndUpdate({_id: req.user.id}, {name: newName, number, address});
+  const { name, number, address } = req.body;
+  const { _id, role, name: oldName, email } = await User.findOneAndUpdate({_id: req.user.id}, {name, number, address});
   res.status(200).json({
     id: _id,
     name,
